@@ -1,2 +1,2 @@
 # DataAna-HTML
-A Data Analysing tool based on web.  First trial to design a web page using HTML and CSS.
+基于 Web 的数据分析工具。首次尝试使用 HTML 和 CSS 设计网页。
