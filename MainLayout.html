@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线路谱数据分析工具</title>
+    <style>
+        /*布置网络布局的基本形态，五行十六列的比例*/
+        .netlayout {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto;
+            grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+            grid-gap: 5px;
+            background-color: white;
+            padding: 5px
+        }
+
+        /*布置网格特征*/
+        .netlayout>div {
+            background-color: rgb(177, 172, 172);
+            text-align: center;
+            padding: 10px 0;
+            font-size: 30px;
+        }
+
+        /*进行网格区域的分配*/
+
+        /*菜单栏，暂时分三栏*/
+        .menu1 {
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+
+        .menu2 {
+            grid-column-start: 3;
+            grid-column-end: 4;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+
+        .menu3 {
+            grid-column-start: 4;
+            grid-column-end: 5;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+
+        /*左侧显示栏与右侧工具栏*/
+        .lefttitle {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+
+        .leftshow {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 2;
+            grid-row-end: 14;
+        }
+
+
+        .righttitle {
+            grid-column-start: 5;
+            grid-column-end: 6;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+
+        .righttool {
+            grid-column-start: 5;
+            grid-column-end: 6;
+            grid-row-start: 2;
+            grid-row-end: 14;
+        }
+
+
+        /*中间展示栏*/
+        .middlemain {
+            grid-column-start: 2;
+            grid-column-end: 5;
+            grid-row-start: 2;
+            grid-row-end: 14;
+        }
+
+        /*最下方状态栏*/
+        .bottomcondition {
+            grid-column-start: 1;
+            grid-column-end: 6;
+            grid-row-start: 14;
+            grid-row-end: 15;
+        }
+
+        /*设置下拉菜单的类*/
+        /* 下拉菜单的样式 */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background-color: white;
+            color: black;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 345px;
+            box-shadow: 0 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .show {
+            display: block;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="
+    display: block;
+    color: yellowgreen;
+    background-color: blue;
+    text-align: center;
+    font-size: 80px;
+    font-family: 'Times New Roman', Times, serif;
+    ">
+        在线路谱数据分析工具
+    </h1>
+    <div class="netlayout">
+        <div onclick="toggleDropdown()" class="menu1 dropdown">
+            <button class="dropdown-button">文件</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#" onclick="openFilepicker()">导入</a>
+                <a href="#">导出</a>
+                <a href="#">打印</a>
+            </div>
+        </div>
+        <div class="menu2 dropdown">
+            <button class="dropdown-button">数据</button>
+            <div class="dropdown-content">
+                <a href="#">选项1</a>
+                <a href="#">选项2</a>
+                <a href="#">选项3</a>
+            </div>
+        </div>
+        <div class="menu3 dropdown">
+            <button class="dropdown-button">视图</button>
+            <div class="dropdown-content">
+                <a href="#">选项1</a>
+                <a href="#">选项2</a>
+                <a href="#">选项3</a>
+            </div>
+        </div>
+        <div class="lefttitle">表格显示区</div>
+        <div class="leftshow" style="background-color: rgb(228, 225, 225);"></div>
+        <div class="righttitle">工具栏</div>
+        <div class="righttool" style="background-color: rgb(228, 225, 225);"></div>
+        <div class="middlemain" style="background-color: white;">主结果显示区</div>
+        <div class="bottomcondition">状态栏</div>
+    </div>
+    <script>
+
+        // 切换下拉菜单的显示状态
+        function toggleDropdown() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // 打开文件选择器
+        function openFilePicker() {
+            document.getElementById("fileInput").click();
+        }
+
+        // 读取文件内容
+        function loadFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const fileContent = e.target.result;
+                document.getElementById("output").innerText = "文件已加载，内容如下：\n" + fileContent;
+            };
+
+            reader.readAsText(file); // 读取文件内容为文本
+        }
+
+        // 点击页面其他地方关闭下拉菜单
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        };
+
+    </script>
+</body>
+
+</html>
