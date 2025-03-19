@@ -6,11 +6,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>测试</title>
     <link rel="stylesheet" href="bootstrap-3.4.1/css/bootstrap.css">
+    <style>
+        .fengexian {
+            border: 0;
+            /* 清除默认边框 */
+            height: 2px;
+            /* 设置高度 */
+            background-color: #bdbaba;
+            /* 设置背景颜色 */
+            margin: 20px 0;
+            /* 设置上下边距 */
+        }
+
+        .divider_chuizhi {
+            width: 100%;
+            height: 1px;
+            background-color: white;
+            margin: 20px 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto auto;
+            grid-gap: 5px;
+            background-color: white;
+            padding: 5px;
+        }
+
+        .grid-container>div {
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 5px 0;
+            font-size: 30px;
+        }
+
+        .item1 {
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+
+        .item2 {
+            grid-column-start: 3;
+            grid-column-end: 6;
+        }
+
+        .item3 {
+            grid-column-start: 6;
+            grid-column-end: 7;
+        }
+    </style>
 </head>
 
 <body>
-    <input class="btn btn-primary" type="button" value="提交">
-    <a class="button">点击跳转</a>
+    <script src="bootstrap-3.4.1/jquery-3.0.0/jquery-3.0.0.js"></script>
+    <script src="bootstrap-3.4.1/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="table.js"></script>
+    <input type="file" id="file-input" accept=".xls, .xlsx, .csv" style="display: none;">
+    <div class="container">
+
+        <!-- 第一大行 标题栏-->
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>
+                    <p class="text-center">
+                        在线路谱数据分析工具
+                    </p>
+                </h1>
+            </div>
+        </div>
+
+        <!-- 第二大行，分割线，作为分离符 -->
+        <div class="row">
+            <hr class="fengexian">
+        </div>
+
+        <!--第三大行，侧栏标题和中心的菜单，侧栏有“表格”标签，“工具栏”标签，中心是文件，数据，视图-->
+        <div class="row">
+            <!-- 表格标签栏 -->
+            <div class="col-md-3">
+                <h2>
+                    <p class="text-center">
+                        <span class="label label-primary">表格</span>
+                    </p>
+                </h2>
+            </div>
+
+            <!-- 菜单栏 -->
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-xs-3 col-sm-4">
+                        <!-- 文件 -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary lg dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                文件 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" id="inputbutton">导入</a></li>
+                                <li><a href="#">导出</a></li>
+                                <li><a href="#">查看现有报告</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">帮助</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-4">
+                        <!-- 数据 -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary lg dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                数据 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">自动分析</a></li>
+                                <li><a href="#">手动分析</a></li>
+                                <li><a href="#">生成报告</a></li>
+                                <l role="separator" class="divider">
+                                    </li>
+                                    <li><a href="#">说明</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-4">
+                        <!-- 视图 -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary lg dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                视图 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">工具栏（显示/隐藏）</a></li>
+                                <li><a href="#">表格栏（显示/隐藏）</a></li>
+                                <li><a href="#">状态栏（显示/隐藏）</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">帮助</a></li>
+                            </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 工具标签栏 -->
+            <div class="col-md-2">
+                <h2>
+                    <p class="text-center">
+                        <span class="label label-primary">工具</span>
+                    </p>
+                </h2>
+            </div>
+
+            <!-- 层级：大行大列的区块布局，次大 -->
+        </div>
+
+        <!-- 第四大行，分割线 -->
+        <hr class="fengexian">
+
+        <!-- 第五大行，大量空间，容纳表格，主体显示区，和工具栏区 -->
+        <div class="grid-container">
+            <div class="item1">
+                <div style="
+                        width: 300px;
+                        height: 500px;
+                        border: 2px dotted #bdbaba;
+                        padding: 10px;
+                        margin: 0;
+                        ">
+                    表格显示区
+                </div>
+            </div>
+            <div class="item2">
+                <div style="
+                        width: 600px;
+                        height: 500px;
+                        border: 2px dotted #bdbaba;
+                        padding: 10px;
+                        margin: 0;
+                        ">
+                    分析结果显示
+                </div>
+            </div>
+            <div class="item3">
+                <div style="
+                        width: 100px;
+                            height: 500px;
+                        border: 2px dotted #bdbaba;
+                        padding: 10px;
+                        margin: 0;
+                    ">
+                    快捷工具栏
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- 层级：大行大列的区块布局，次大 -->
+    </div>
+
+    <!-- 第六大行，分割线 -->
+    <hr class="fengexian">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <!-- 层级：最大，界面布局容器 -->
 
 </body>
 
