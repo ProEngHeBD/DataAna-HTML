@@ -1,15 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>这是一个用于github域名部署时的识别文件
-    </title>
+    <title>线路谱数据分析工具</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+    <div class="menu-bar">
+        <div class="menu-item">
+            <span>文件</span>
+            <div class="dropdown-content">
+                <a href="#" id="import">导入</a>
+            </div>
+        </div>
+        <div class="menu-item">
+            <span>数据</span>
+            <div class="dropdown-content">
+                <a href="#">选项1</a>
+                <a href="#">选项2</a>
+            </div>
+        </div>
+        <div class="menu-item">
+            <span>工具</span>
+            <div class="dropdown-content">
+                <a href="#">选项1</a>
+                <a href="#">选项2</a>
+            </div>
+        </div>
+    </div>
 
+    <div class="table-container">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>名称</th>
+                    <th>时长</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 数据行将通过JavaScript动态添加 -->
+            </tbody>
+        </table>
+        <div class="table-controls">
+            <button id="toggle-display">显示/隐藏</button>
+            <button id="view">查看</button>
+            <button id="edit">修改</button>
+        </div>
+    </div>
+
+    <input type="file" id="file-input" style="display: none;" accept=".csv, .xlsx">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
